@@ -21,6 +21,10 @@
 */
 
 // 강화 실패, 성공 반환
+typedef struct {
+    char up1[max], up2[max], down[max];
+} workSetting;
+
 char myResult(int* percent, int shuffle){
     srand((unsigned int)time(NULL) + shuffle);
     int random = rand() % 100;
@@ -50,7 +54,7 @@ void myFormat(char arr[], char arr2[], char arr3[]){
     }
 }
 
-void myUI(char up1[], char up2[], char down[], int percent, int n){
+void myUI(workSetting setStone, int percent, int n){
     int i;
 
     printf(" ┌──────[전설]돌 세공 시뮬레이터──────┐\n");
@@ -60,17 +64,18 @@ void myUI(char up1[], char up2[], char down[], int percent, int n){
 
     printf("\n1. 증가각인 1 │ ");
     for(i = 0; i < n; i++){
-        printf("%c ", up1[i]);
+        printf("%c ", setStone.up1[i]);
     }
     printf("\n2. 증가각인 2 │ ");
     for(i = 0; i < n; i++){
-        printf("%c ", up2[i]);
+        printf("%c ", setStone.up2[i]);
     }
     printf("\n3. 감소각인   │ ");
     for(i = 0; i < n; i++){
-        printf("%c ", down[i]);
+        printf("%c ", setStone.down[i]);
     }
 }
+
 
 int main(){
     int percent = 75, stone, index, choice;
@@ -78,11 +83,11 @@ int main(){
 
     int i;
 
-    char up1[max], up2[max], down[max];
+    workSetting setStone;
 
     do{
         stone = 0;
-        myFormat(up1, up2, down);
+        myFormat(setStone.up1, setStone.up2, setStone.down);
 
         printf(" ┌──────────────────────────┐\n");
         printf(" │    돌세공 시뮬레이터     │\n");
@@ -97,27 +102,27 @@ int main(){
         index = (11 - stone) * 3;
         if(stone == 1){
             for(i=0; i<index; i++){
-                myUI(up1, up2, down, percent, (11 - stone));
+                myUI(setStone, percent, (11 - stone));
                 printf("\n각인 선택 : ");
                 scanf("%d", &choice);
 
                 if(choice == 1){
                     if(up1Count < (11 - stone)){
-                        up1[up1Count++] = myResult(&percent, i);
+                        setStone.up1[up1Count++] = myResult(&percent, i);
                     } else {
                         i--;
                     }
                 }
                 else if(choice == 2){
                     if(up2Count < (11 - stone)){
-                        up2[up2Count++] = myResult(&percent, i);
+                        setStone.up2[up2Count++] = myResult(&percent, i);
                     } else {
                         i--;
                     }
                 }
                 else if(choice == 3){
                     if(downCount < (11 - stone)){
-                        down[downCount++] = myResult(&percent, i);
+                        setStone.down[downCount++] = myResult(&percent, i);
                     } else {
                         i--;
                     }
@@ -131,27 +136,27 @@ int main(){
         // 2가 전설 9칸
         else if(stone == 2){
             for(i=0; i<index; i++){
-                myUI(up1, up2, down, percent, (11 - stone));
+                myUI(setStone, percent, (11 - stone));
                 printf("\n각인 선택 : ");
                 scanf("%d", &choice);
 
                 if(choice == 1){
                     if(up1Count < (11 - stone)){
-                        up1[up1Count++] = myResult(&percent, i);
+                        setStone.up1[up1Count++] = myResult(&percent, i);
                     } else {
                         i--;
                     }
                 }
                 else if(choice == 2){
                     if(up2Count < (11 - stone)){
-                        up2[up2Count++] = myResult(&percent, i);
+                        setStone.up2[up2Count++] = myResult(&percent, i);
                     } else {
                         i--;
                     }
                 }
                 else if(choice == 3){
                     if(downCount < (11 - stone)){
-                        down[downCount++] = myResult(&percent, i);
+                        setStone.down[downCount++] = myResult(&percent, i);
                     } else {
                         i--;
                     }
@@ -162,6 +167,10 @@ int main(){
                 system("clear");
             }
         }
+
+        myUI(setStone, percent, (11 - stone));
+        printf("\n종료하시려면 아무키나 누르세요.");
+        scanf("%d", &choice);
 
         system("clear");
 
